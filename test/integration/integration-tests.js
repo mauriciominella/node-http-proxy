@@ -1,7 +1,7 @@
 var assert = require('chai').assert;
 var superagent = require('superagent');
-var server = require('../../server');
-var users = require('../../users');
+var server = require('../../src/server');
+var users = require('../../src/users');
 var status = require('http-status');
 
 describe('/mobile', function() {
@@ -15,12 +15,19 @@ describe('/mobile', function() {
     app.close();
   });
 
-  it('returns mobile api when requests to 9000/mobile', function(done){
+  it('it returns mobile api when request to 9000/mobile', function(done){
     superagent.get('http://localhost:9000/mobile').end(function(err, res) {
       assert.ifError(err);
       assert.equal(res.status, status.OK);
-      //var result = JSON.parse(res.text);
-      //assert.deepEqual({ user: 'test' }, result);
+      assert.isTrue(res.text.indexOf('I am the mobile api') > -1);
+      done();
+    });
+  });
+
+  it('it returns 401 code when the login is not provided', function(done){
+    superagent.get('http://localhost:9000/mobile').end(function(err, res) {
+      assert.ifError(err);
+      assert.equal(res.status, status.UNAUTHORIZED);
       assert.isTrue(res.text.indexOf('I am the mobile api') > -1);
       done();
     });

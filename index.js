@@ -1,2 +1,2 @@
-var createServer = require('./server');
+var createServer = require('./src/server');
 createServer();
