@@ -36,7 +36,74 @@ var createMobileServer = function(){
   });
 
   // API ROUTES -------------------
-  // we'll get to these in a second
+
+  // get an instance of the router for api routes
+  var apiRoutes = express.Router();
+
+  // route to authenticate a user (POST http://localhost:8080/api/authenticate)
+  apiRoutes.post('/authenticate', function(req, res) {
+
+    username = req.body.username;
+    if (username != 'admin') {
+      res.json({ success: false, message: 'Authentication failed. User not found.' });
+    } else if (username) {
+
+      // check if password matches
+      if ('1234' != req.body.password) {
+        res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+      } else {
+
+        // if user is found and password is right
+        // create a token
+        var token = jwt.sign(username, 'superSecret', {
+
+        });
+
+        // return the information including token as JSON
+        res.json({
+          success: true,
+          message: 'Enjoy your token!',
+          token: token
+        });
+      }
+
+    }
+  });
+
+  // route middleware to verify a token
+  apiRoutes.use(function(req, res, next) {
+
+    // check header or url parameters or post parameters for token
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+    // decode token
+    if (token) {
+
+      // verifies secret and checks exp
+      jwt.verify(token, 'superSecret', function(err, decoded) {
+        if (err) {
+          return res.json({ success: false, message: 'Failed to authenticate token.' });
+        } else {
+          // if everything is good, save to request for use in other routes
+          req.decoded = decoded;
+          next();
+        }
+      });
+
+    } else {
+
+      // if there is no token
+      // return an error
+      return res.status(403).send({
+          success: false,
+          message: 'No token provided.'
+      });
+
+    }
+  });
+
+  // apply the routes to our application with the prefix /api
+  app.use('/api', apiRoutes);
 
   // =======================
   // start the server ======

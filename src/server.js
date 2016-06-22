@@ -8,7 +8,8 @@ var createServer = function(port) {
   // Set up proxy rules instance
   var proxyRules = new HttpProxyRules({
     rules: {
-      '.*/mobile': 'http://localhost:8080/',
+      '.*/mobile/authenticate': 'http://localhost:8080/api/authenticate',
+      '.*/mobile': 'http://localhost:8080/api/mobile',
       '.*/cupom': 'http://localhost:8081/',
       '.*/fluxo': 'http://localhost:8082/',
     },

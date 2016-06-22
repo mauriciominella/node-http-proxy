@@ -16,19 +16,28 @@ describe('/mobile', function() {
   });
 
   it('it returns mobile api when request to 9000/mobile', function(done){
-    superagent.get('http://localhost:9000/mobile').end(function(err, res) {
-      assert.ifError(err);
-      assert.equal(res.status, status.OK);
-      assert.isTrue(res.text.indexOf('I am the mobile api') > -1);
-      done();
+
+    superagent.post('http://localhost:9000/mobile/authenticate')
+      .send({username: 'admin', password: '1234'})
+      .end(function(err, res) {
+      testAuthenticatedUser(res.body.token);
     });
+
+    function testAuthenticatedUser(token){
+      superagent.post('http://localhost:9000/mobile')
+        .send({token: token})
+        .end(function(err, res) {
+        assert.ifError(err);
+        assert.equal(res.status, status.OK);
+        assert.isTrue(res.text.indexOf('I am the mobile api') > -1);
+        done();
+      });
+    }
   });
 
-  it('it returns 401 code when the login is not provided', function(done){
+  it('it returns 403 code when the login is not provided', function(done){
     superagent.get('http://localhost:9000/mobile').end(function(err, res) {
-      assert.ifError(err);
-      assert.equal(res.status, status.UNAUTHORIZED);
-      assert.isTrue(res.text.indexOf('I am the mobile api') > -1);
+      assert.equal(res.status, status.FORBIDDEN);
       done();
     });
   });
