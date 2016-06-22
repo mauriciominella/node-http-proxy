@@ -11,11 +11,16 @@
   "license": "ISC",
   "dependencies": {
     "assert": "^1.4.1",
+    "body-parser": "^1.15.2",
     "chai": "^3.5.0",
+    "express": "^4.14.0",
     "http-proxy": "^1.14.0",
     "http-proxy-rules": "^1.0.1",
     "http-status": "^0.2.3",
+    "jsonwebtoken": "^7.0.1",
     "mocha": "^2.5.3",
+    "mongoose": "^4.5.1",
+    "morgan": "^1.7.0",
     "superagent": "^2.0.0"
   }
 }

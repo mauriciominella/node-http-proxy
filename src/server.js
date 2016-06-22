@@ -1,6 +1,7 @@
 var http = require('http'),
     httpProxy = require('http-proxy'),
-    HttpProxyRules = require('http-proxy-rules');
+    HttpProxyRules = require('http-proxy-rules'),
+    mobileServer = require('./mobile-server');
 
 
 var createServer = function(port) {
@@ -19,7 +20,7 @@ var createServer = function(port) {
 
 
   proxy.on('proxyReq', function (proxyReq, req, res) {
-    
+
   });
 
   // Create http server that leverages reverse proxy instance
@@ -44,11 +45,13 @@ var createServer = function(port) {
   //
   // Create your target server
   //
-  http.createServer(function (req, res) {
+  /*http.createServer(function (req, res) {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.write('I am the mobile api!' + '\n' + JSON.stringify(req.headers, true, 2));
     res.end();
-  }).listen(8080);
+  }).listen(8080);*/
+
+  mobileServer();
 
   http.createServer(function (req, res) {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
