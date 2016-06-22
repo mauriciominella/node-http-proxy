@@ -3,6 +3,7 @@ var http = require('http'),
     HttpProxyRules = require('http-proxy-rules'),
     mobileServer = require('./mobile-server');
 
+var config = require('./config');
 
 var createServer = function(port) {
   // Set up proxy rules instance
@@ -39,20 +40,11 @@ var createServer = function(port) {
 
     res.writeHead(500, { 'Content-Type': 'text/plain' });
     res.end('The request url and path did not match any of the listed rules!');
-  }).listen(9000, function(){
+  }).listen(config.PROXY_PORT, function(){
     console.log("proxy listening...")
   });
 
-  //
-  // Create your target server
-  //
-  /*http.createServer(function (req, res) {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.write('I am the mobile api!' + '\n' + JSON.stringify(req.headers, true, 2));
-    res.end();
-  }).listen(8080);*/
-
-  mobileServer();
+  mobileServer(8080);
 
   http.createServer(function (req, res) {
     res.writeHead(200, { 'Content-Type': 'text/plain' });

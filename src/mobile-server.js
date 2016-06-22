@@ -12,11 +12,10 @@ var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var User   = require('./users'); // get our mongoose model
 
 
-var createMobileServer = function(){
+var createMobileServer = function(port){
   // =======================
   // configuration =========
   // =======================
-  var port = 8080; // used to create, sign, and verify tokens
   //mongoose.connect(config.database); // connect to database
   //app.set('superSecret', config.secret); // secret variable
 

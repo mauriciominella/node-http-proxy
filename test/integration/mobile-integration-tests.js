@@ -3,6 +3,8 @@ var superagent = require('superagent');
 
 var users = require('../../src/users');
 var status = require('http-status');
+var config = require('../../src/config')
+var proxybaseURL = 'http://localhost:' + config.PROXY_PORT;
 
 describe('/mobile', function() {
   var app;
@@ -10,7 +12,7 @@ describe('/mobile', function() {
 
   before(function() {
     server = require('../../src/server', {bustCache: true});
-    app = server(3000);
+    app = server(config.PROXY_PORT);
   });
 
   after(function() {
@@ -18,8 +20,7 @@ describe('/mobile', function() {
   });
 
   it('it authenticates and returns 200 when the user and pass are correct ', function(done){
-
-    superagent.post('http://localhost:9000/mobile/authenticate')
+    superagent.post(proxybaseURL + '/mobile/authenticate')
       .send({username: 'admin', password: '1234'})
       .end(function(err, res) {
         assert.equal(res.status, status.OK);
@@ -27,7 +28,7 @@ describe('/mobile', function() {
     });
 
     function testAuthenticatedUser(token){
-      superagent.get('http://localhost:9000/mobile')
+      superagent.get(proxybaseURL + '/mobile')
         .send({token: token})
         .end(function(err, res) {
         assert.ifError(err);
@@ -39,7 +40,7 @@ describe('/mobile', function() {
   });
 
   it('it returns 403 code when the login is not provided', function(done){
-    superagent.get('http://localhost:9000/mobile').end(function(err, res) {
+    superagent.get(proxybaseURL + '/mobile').end(function(err, res) {
       assert.equal(res.status, status.FORBIDDEN);
       done();
     });
