@@ -16,7 +16,7 @@ var createMobileServer = function(){
   // =======================
   // configuration =========
   // =======================
-  var port = process.env.PORT || 8080; // used to create, sign, and verify tokens
+  var port = 8080; // used to create, sign, and verify tokens
   //mongoose.connect(config.database); // connect to database
   //app.set('superSecret', config.secret); // secret variable
 
