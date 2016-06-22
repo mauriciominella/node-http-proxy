@@ -1,13 +1,15 @@
 var assert = require('chai').assert;
 var superagent = require('superagent');
-var server = require('../../src/server');
+
 var users = require('../../src/users');
 var status = require('http-status');
 
 describe('/mobile', function() {
   var app;
+  var server;
 
   before(function() {
+    server = require('../../src/server', {bustCache: true});
     app = server(3000);
   });
 
@@ -15,16 +17,17 @@ describe('/mobile', function() {
     app.close();
   });
 
-  it('it returns mobile api when request to 9000/mobile', function(done){
+  it('it authenticates and returns 200 when the user and pass are correct ', function(done){
 
     superagent.post('http://localhost:9000/mobile/authenticate')
       .send({username: 'admin', password: '1234'})
       .end(function(err, res) {
-      testAuthenticatedUser(res.body.token);
+        assert.equal(res.status, status.OK);
+        testAuthenticatedUser(res.body.token);
     });
 
     function testAuthenticatedUser(token){
-      superagent.post('http://localhost:9000/mobile')
+      superagent.get('http://localhost:9000/mobile')
         .send({token: token})
         .end(function(err, res) {
         assert.ifError(err);
@@ -41,6 +44,7 @@ describe('/mobile', function() {
       done();
     });
   });
+
 
   /*it('returns username if name param is a valid user', function(done) {
     users.list = ['test'];

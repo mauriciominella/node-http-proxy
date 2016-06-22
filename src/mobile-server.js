@@ -27,18 +27,15 @@ var createMobileServer = function(){
   // use morgan to log requests to the console
   app.use(morgan('dev'));
 
-  // =======================
-  // routes ================
-  // =======================
-  // basic route
-  app.get('/', function(req, res) {
-      res.send('I am the mobile api at http://localhost:' + port + '/api');
-  });
 
   // API ROUTES -------------------
 
   // get an instance of the router for api routes
   var apiRoutes = express.Router();
+
+  apiRoutes.get('/mobile', function(req, res) {
+      res.send('I am the mobile api at http://localhost:' + port + '/api');
+  });
 
   // route to authenticate a user (POST http://localhost:8080/api/authenticate)
   apiRoutes.post('/authenticate', function(req, res) {
@@ -71,7 +68,12 @@ var createMobileServer = function(){
   });
 
   // route middleware to verify a token
-  apiRoutes.use(function(req, res, next) {
+  app.use(function(req, res, next) {
+
+    if(req.url.indexOf('authenticate') > -1){
+      next();
+      return;
+    }
 
     // check header or url parameters or post parameters for token
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
