@@ -33,6 +33,7 @@ var createMobileServer = function(port){
   var apiRoutes = express.Router();
 
   apiRoutes.get('/mobile', function(req, res) {
+    //console.log('HEADERRRRRR :' + req.headers['X-Special-Proxy-Header'])
       res.send('I am the mobile api at http://localhost:' + port + '/api');
   });
 

@@ -21,13 +21,30 @@ var createServer = function(port) {
   var proxy = httpProxy.createProxy();
 
 
-  proxy.on('proxyReq', function (proxyReq, req, res) {
-
+  proxy.on('proxyReq', function(proxyReq, req, res, options) {
+    /* CHANGING THE HEADER BEFORE REACHING THE TARGET API */
+    proxyReq.setHeader('X-Special-Proxy-Header', 'foobar');
   });
+
+  proxy.on('proxyRes', function(proxyRes, req, res, options) {
+    /* It seems we are not able to change anything on both request and response */
+    //console.log('RAW Response from the target', JSON.stringify(proxyRes.headers, true, 2));
+  });
+
 
   // Create http server that leverages reverse proxy instance
   // and proxy rules to proxy requests to different targets
   var app = http.createServer(function(req, res) {
+
+
+     /* CHANGING THE HEADER BEFORE RESPONDING THE REQUEST */
+     res.oldWriteHead = res.writeHead;
+     res.writeHead = function(statusCode, headers) {
+       /* add logic to change headers here */
+       var contentType = res.getHeader('content-type');
+       res.setHeader('X-Special-Proxy-Header', 'foobar');
+       res.oldWriteHead(statusCode, headers);
+     }
 
     // a match method is exposed on the proxy rules instance
     // to test a request to see if it matches against one of the specified rules
@@ -44,6 +61,9 @@ var createServer = function(port) {
     console.log("proxy listening...")
   });
 
+
+
+  /***************** TESTING SERVERS. NOTHING TO DO WITH THE PROXY ****************************************/
   mobileServer(8080);
 
   http.createServer(function (req, res) {

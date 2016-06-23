@@ -46,6 +46,23 @@ describe('/mobile', function() {
     });
   });
 
+  it('it contains the special header injected by the proxy', function(done){
+    superagent.post(proxybaseURL + '/mobile/authenticate')
+      .send({username: 'admin', password: '1234'})
+      .end(function(err, res) {
+        testAuthenticatedUser(res.body.token);
+    });
+
+    function testAuthenticatedUser(token){
+      superagent.get(proxybaseURL + '/mobile')
+        .send({token: token})
+        .end(function(err, res) {
+        assert.equal(res.headers['x-special-proxy-header'], 'foobar');
+        done();
+      });
+    }
+  });
+
 
   /*it('returns username if name param is a valid user', function(done) {
     users.list = ['test'];
