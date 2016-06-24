@@ -1,4 +1,5 @@
 var http = require('http'),
+    express = require('express')
     httpProxy = require('http-proxy'),
     HttpProxyRules = require('http-proxy-rules'),
     mobileServer = require('./mobile-server');
@@ -35,7 +36,6 @@ var createServer = function(port) {
   // Create http server that leverages reverse proxy instance
   // and proxy rules to proxy requests to different targets
   var app = http.createServer(function(req, res) {
-
 
      /* CHANGING THE HEADER BEFORE RESPONDING THE REQUEST */
      res.oldWriteHead = res.writeHead;

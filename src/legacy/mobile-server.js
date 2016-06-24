@@ -53,7 +53,7 @@ var createMobileServer = function(port){
         // if user is found and password is right
         // create a token
         var token = jwt.sign(username, 'superSecret', {
-
+            
         });
 
         // return the information including token as JSON

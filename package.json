@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha --recursive",
-    "start": "node index.js"
+    "start": "node ./bin/service.js"
   },
   "author": "",
   "license": "ISC",
