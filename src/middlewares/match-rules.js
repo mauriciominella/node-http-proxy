@@ -2,7 +2,48 @@ import url from 'url';
 import { merge, escapeRegExp } from 'lodash';
 
 
+
+
 export default ({ rules = [], apps = {} } = {}) => {
+
+  rules = [
+    {
+      matches: {
+        path: { value: '/token' },
+      },
+      proxy: {
+        enabled: true,
+        changeOrigin: true,
+        target: 'http://oauth2-service.develop.bravi.com.br',
+      },
+    },
+    {
+      matches: {
+        path: { value: '/sebrae/login' },
+      },
+      password: {
+        enabled: true,
+        clientId: 2,
+        clientSecret: 'adasd',
+      },
+    },
+    {
+      matches: {
+        path: { pattern: '^\/api(\/.*)$' },
+      },
+      oauth2: {
+        enabled: true,
+      },
+      proxy: {
+        enabled: true,
+        changeOrigin: true,
+        target: 'http://www.sebraeinteligenciasetorial.com.br',
+      },
+    }
+  ]
+
+
+
   if (rules.length === 0) {
     return (req, res, next) => {
       next();
