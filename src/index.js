@@ -1,20 +1,19 @@
-var matchRules = require('./middlewares/match-rules')
-var proxy = require('./middlewares/proxy')
+import matchRules from './middlewares/match-rules';
+import proxy from './middlewares/proxy';
+import express from 'express';
 
 function application () {
-  var app = (require('express'))();
+  const app = express();
 
-  app.use(matchRules);
-  app.use(proxy);
+  app.use(matchRules());
+  app.use(proxy());
   return app;
 }
 
-module.exports = {
-  start: function (config) {
-      var app = application(config);
+export function start () {
+  const app = application();
 
-      app.listen(9000, function(){
-        console.log('listening...')
-      });
-  },
-};
+  app.listen(9000, () => {
+    console.log('listening...');
+  });
+}

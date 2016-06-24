@@ -4,15 +4,41 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "mocha --recursive",
-    "start": "node ./bin/service.js"
+    "lint": "eslint src/ spec",
+    "start": "node bin/service.js",
+    "test": "NODE_ENV=test npm run lint && mocha --compilers js:babel-register --timeout 30000 --report spec --recursive --watch-extensions .spec.js ./spec",
+    "build": "babel src/ --out-dir app",
+    "test:watch": "npm run test -- --watch --bail ./spec",
+    "dev": "babel-node bin/service.js",
+    "dev:watch": "supervisor --watch src -- -r 'babel-register' ./bin/service.js"
+  },
+  "babel": {
+    "plugins": [
+      "transform-es2015-destructuring",
+      "transform-es2015-parameters",
+      "transform-es2015-modules-commonjs",
+      "transform-async-to-generator",
+      "transform-object-rest-spread",
+      "syntax-object-rest-spread"
+    ]
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "assert": "^1.4.1",
+    "babel-cli": "^6.9.0",
+    "babel-eslint": "^6.0.4",
+    "babel-plugin-syntax-object-rest-spread": "^6.8.0",
+    "babel-plugin-transform-async-to-generator": "^6.8.0",
+    "babel-plugin-transform-es2015-destructuring": "^6.9.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.8.0",
+    "babel-plugin-transform-es2015-parameters": "^6.9.0",
+    "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "body-parser": "^1.15.2",
     "chai": "^3.5.0",
+    "eslint": "^2.13.1",
+    "eslint-config-airbnb-base": "^3.0.1",
+    "eslint-plugin-import": "^1.9.2",
     "express": "^4.14.0",
     "http-proxy": "^1.14.0",
     "http-proxy-rules": "^1.0.1",
