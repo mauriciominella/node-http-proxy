@@ -36,7 +36,7 @@ import httpProxy from 'http-proxy';
 import url from 'url';
 
 
-//const buildDebug = require('../env/correlation-debug')('middlewares:proxy');
+// const buildDebug = require('../env/correlation-debug')('middlewares:proxy');
 
 
 const proxyEngine = httpProxy.createProxyServer({
@@ -66,8 +66,8 @@ export default () => {
       host: destUrl.host,
     });
 
-    //const debug = buildDebug(req.headers['x-request-id']);
-    //debug('proxy from %s to %s', req.url, finalTargetUrl);
+    // const debug = buildDebug(req.headers['x-request-id']);
+    // debug('proxy from %s to %s', req.url, finalTargetUrl);
 
     proxyEngine.web(req, res, { ...proxy, target: finalTargetUrl }, (err) => {
       console.error(err); // eslint-disable-line no-console

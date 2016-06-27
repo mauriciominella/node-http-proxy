@@ -2,8 +2,6 @@ import url from 'url';
 import { merge, escapeRegExp } from 'lodash';
 
 
-
-
 export default ({ rules = [], apps = {} } = {}) => {
   if (rules.length === 0) {
     return (req, res, next) => {
@@ -39,7 +37,7 @@ export default ({ rules = [], apps = {} } = {}) => {
     // extract the proxy rules based in the apps configurations
     req.proxyRule = Object.keys(appsEnhancedRules).reduce((proxyRule, appKey) => {
       const appRule = appsEnhancedRules[appKey];
-      return filterAndCombineRules([ proxyRule, ...appRule ], keys);
+      return filterAndCombineRules([proxyRule, ...appRule], keys);
     }, baseProxyRule);
 
     next();

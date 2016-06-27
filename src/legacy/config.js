@@ -1,7 +1,5 @@
-var config = function(){
-    return {
-        PROXY_PORT : 9000
-    };
-};
-
-module.exports = config();
+export default function config () {
+  return {
+    PROXY_PORT: 9000,
+  };
+}

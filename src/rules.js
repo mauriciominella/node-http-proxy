@@ -110,6 +110,6 @@ const ruleset = {
     //   },
     // },
   ],
-}
+};
 
 export default ruleset;

@@ -1,10 +1,8 @@
 import express from 'express';
-import fs from 'fs';
-
-import config from './env/config';
+// import config from './env/config';
 // import etcd from './env/etcd';
 import middleware from './middleware';
-import rules from './rules'
+import rules from './rules';
 // import etcdRules from './services/etcd-rules';
 
 const app = express();
